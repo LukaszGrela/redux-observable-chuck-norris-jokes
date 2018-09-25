@@ -1,0 +1,2 @@
+export const UPDATE_TIMER_INTERVAL = 1000;
+export const POLL_INTERVAL = 15000;

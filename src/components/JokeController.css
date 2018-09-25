@@ -1,0 +1,30 @@
+.JokeController__button-start,
+.JokeController__button-stop {
+  /* reset button */
+  background: unset;
+  border: unset;
+  padding: unset;
+
+  cursor: pointer;
+}
+
+.JokeController__button-start:focus,
+.JokeController__button-stop:focus {
+  /* reset button */
+  outline: none;
+}
+.JokeController__button-start path,
+.JokeController__button-stop path {
+  /* reset button */
+  fill: white;
+}
+.JokeController__button-start {
+
+}
+.JokeController__button-stop {
+
+}
+.JokeController {
+  display: flex;
+}
+

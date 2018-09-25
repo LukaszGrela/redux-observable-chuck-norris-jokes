@@ -1,0 +1,64 @@
+.JokesList__list {
+  width: 70%;
+  margin: 0 auto;
+  min-width: 320px;
+}
+
+.Joke {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.Joke__timeout {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 6px;
+}
+.Joke__bar {
+  position: absolute;
+  background-color: red;
+  height: 6px;
+  transition: 500ms width ease-out;
+}
+
+blockquote.Joke {
+  font: 20px/24px italic Times, serif;
+  padding: 16px 34px;
+  background-color: #faebbc;
+  border-top: 1px solid #e1cc89;
+  border-bottom: 1px solid #e1cc89;
+  margin: 5px 0;
+  text-align: left;
+  position: absolute;
+  width: 75%;
+  min-width: 300px;
+  min-height: 48px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+blockquote.Joke::before,
+blockquote.Joke::after {
+  
+  color: #e1cc89;
+  font-size: 24px;
+  font-style: italic;
+  position: absolute;
+}
+
+blockquote.Joke::before {
+  content: ':) ';
+  top: 4px;
+  left: 12px;
+}
+
+
+blockquote.Joke::after {
+  content: ' (:';
+  bottom: 7px;
+  right: 12px;
+}

@@ -1,0 +1,14 @@
+.joke-animation-enter {
+  transform: translateX(-200%) !important;
+}
+.joke-animation-enter-active {
+  transform: translateX(-50%) !important;
+  transition: transform 600ms ease-out;
+}
+.joke-animation-exit {
+  transform: translateX(-50%) !important;
+}
+.joke-animation-exit-active {
+  transform: translateX(200%) !important;
+  transition: transform 600ms ease-in;
+}

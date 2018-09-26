@@ -1,8 +1,7 @@
 # Redux-Observable Test Project
-This is a test project to play with Redux-Observables. It exhibits 2 'epics'  (btw. [why epic][1]?)
+This is a test project to play with Redux-Observables. There is one 'epic'  (btw. [why epic][1]?) that now does the polling heavy lifting.
 
-1. `fetchJokesEpic` - that calls `ajax` to get new joke
-2. `pollJokesEpic` - that will call `FETCH_JOKES` action to retrieve jokes again
+- `pollFetchJokesEpic` - Starts ajax call, reacts to errors and to cancellation.
 
 ### Usage
 Clone the repo then download dependencies

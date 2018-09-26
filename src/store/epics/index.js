@@ -1,7 +1,6 @@
 import { combineEpics } from 'redux-observable';
-import fetchJokesEpic from './fetchJokesEpic';
-import pollJokes from './pollJokesEpic';
+import pollFetchJokesEpic from './pollFetchJokesEpic';
 
-const epics = combineEpics(fetchJokesEpic, pollJokes);
+const epics = combineEpics(pollFetchJokesEpic);
 
 export default epics;

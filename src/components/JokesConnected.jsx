@@ -1,71 +1,75 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import React, { forwardRef, useEffect, useRef, useState } from "react";
+import { connect } from "react-redux";
 
-import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import { TransitionGroup, CSSTransition } from "react-transition-group";
 
-import './JokesConnected.css';
-import './joke-animation.css';
-import { UPDATE_TIMER_INTERVAL, POLL_INTERVAL } from '../constants';
+import "./JokesConnected.css";
+import "./joke-animation.css";
+import { UPDATE_TIMER_INTERVAL, POLL_INTERVAL } from "../constants";
 
-class Joke extends React.Component {
-  tickerId = -1;
-  progressStep = 0;
-  state = {
-    progress: 0,
-  };
-  componentDidMount() {
-    this.progressStep = 100 / (POLL_INTERVAL / UPDATE_TIMER_INTERVAL);
-    this.tickerId = setInterval(this.updateTimer, UPDATE_TIMER_INTERVAL);
-  }
-
-  componentWillUnmount() {
-    if (this.tickerId > -1) {
-      clearInterval(this.tickerId);
-    }
-  }
-  getNewProgress = prevProgress => {
-    return prevProgress + this.progressStep;
-  };
-  updateTimer = () => {
-    this.setState(prevState => ({
-      progress: Math.min(this.getNewProgress(prevState.progress), 100),
-    }));
-  };
-
-  render = () => {
-    const { joke } = this.props;
-    return (
-      <blockquote className="Joke">
-        <span className="Joke__text">{joke}</span>
-        <div className="Joke__timeout">
-          <span
-            className="Joke__bar"
-            style={{ width: `${this.state.progress}%` }}
-          />
-        </div>
-      </blockquote>
-    );
-  };
+/**
+{
+    "categories": [
+        "explicit"
+    ],
+    "created_at": "2020-01-05 13:42:30.177068",
+    "icon_url": "https://api.chucknorris.io/img/avatar/chuck-norris.png",
+    "id": "9HfAFHoJQXGwWpKuFwv4yQ",
+    "updated_at": "2020-01-05 13:42:30.177068",
+    "url": "https://api.chucknorris.io/jokes/9HfAFHoJQXGwWpKuFwv4yQ",
+    "value": "Ever notice just how much Chuck Norris' asshole and your face resemble each other?"
 }
+ */
+const Joke = forwardRef(({ joke }, ref) => {
+  const [progress, setProgress] = useState(0);
+  const tickerIdRef = useRef(-1);
+  const progressStep = 100 / (POLL_INTERVAL / UPDATE_TIMER_INTERVAL);
 
-const JokesList = ({ jokes }) => (
-  <TransitionGroup className="JokesList__list">
-    {jokes.map(joke => (
-      <CSSTransition
-        timeout={{ enter: 600, exit: 600 }}
-        key={`transition-${joke.id}`}
-        classNames="joke-animation">
-        <Joke key={joke.id} {...joke} />
-      </CSSTransition>
-    ))}
-  </TransitionGroup>
-);
+  useEffect(() => {
+    tickerIdRef.current = setInterval(() => {
+      setProgress((prevProgress) => Math.min(prevProgress + progressStep, 100));
+    }, UPDATE_TIMER_INTERVAL);
 
-const mapStateToProps = state => ({
+    return () => {
+      if (tickerIdRef.current > -1) {
+        clearInterval(tickerIdRef.current);
+      }
+    };
+  }, [progressStep]);
+
+  return (
+    <blockquote className="Joke" ref={ref}>
+      <span className="Joke__text">{joke.value}</span>
+      <div className="Joke__timeout">
+        <span className="Joke__bar" style={{ width: `${progress}%` }} />
+      </div>
+    </blockquote>
+  );
+});
+
+const JokesList = ({ jokes }) => {
+  const nodeRef = useRef(null);
+  return (
+    <TransitionGroup className="JokesList__list">
+      {jokes.map((joke) => {
+        console.log("joke", joke);
+        return (
+          <CSSTransition
+            timeout={{ enter: 600, exit: 600 }}
+            key={`transition-${joke.id}`}
+            classNames="joke-animation"
+            nodeRef={nodeRef}
+          >
+            <Joke key={joke.id} joke={joke} ref={nodeRef} />
+          </CSSTransition>
+        );
+      })}
+    </TransitionGroup>
+  );
+};
+
+const mapStateToProps = (state) => ({
   jokes: state.jokes.list,
 });
-const mapDispatchToProps = dispatch => ({});
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(JokesList);
+const mapDispatchToProps = (dispatch) => ({});
+export default connect(mapStateToProps, mapDispatchToProps)(JokesList);

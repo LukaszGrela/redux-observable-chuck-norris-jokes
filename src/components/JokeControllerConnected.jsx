@@ -1,9 +1,9 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { fetchJokes, cancelFetchingJokes } from '../store/actions/jokes-action';
-import SVGIcon from './SVGIcons';
-import './JokeController.css';
+import React from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { fetchJokes, cancelFetchingJokes } from "../store/actions/jokes-action";
+import SVGIcon from "./SVGIcons";
+import "./JokeController.css";
 
 export class JokeController extends React.Component {
   constructor(props) {
@@ -13,9 +13,10 @@ export class JokeController extends React.Component {
       isPolling: props.isPolling || false,
     };
   }
-  clickHandler = event => {
+  clickHandler = (event) => {
+    console.log("JokeController.clickHandler", this.state.isPolling);
     this.setState(
-      prevState => ({
+      (prevState) => ({
         isPolling: !prevState.isPolling,
       }),
       () => {
@@ -27,7 +28,7 @@ export class JokeController extends React.Component {
           // previously was not polling - start
           fetchJokes();
         }
-      }
+      },
     );
   };
   render = () => {
@@ -38,14 +39,16 @@ export class JokeController extends React.Component {
           <button
             type="button"
             onClick={this.clickHandler}
-            className="JokeController__button-stop">
+            className="JokeController__button-stop"
+          >
             <SVGIcon type="pause" />
           </button>
         ) : (
           <button
             type="button"
             onClick={this.clickHandler}
-            className="JokeController__button-start">
+            className="JokeController__button-start"
+          >
             <SVGIcon type="play" />
           </button>
         )}
@@ -61,12 +64,15 @@ JokeController.propTypes = {
 };
 
 const mapStateToProps = ({ orders }) => ({ ...orders });
-const mapDispatchToProps = dispatch => ({
-  fetchJokes: () => dispatch(fetchJokes()),
-  cancelFetchingJokes: () => dispatch(cancelFetchingJokes()),
+const mapDispatchToProps = (dispatch) => ({
+  fetchJokes: () => {
+    console.log("JakeControllerConnected.fetchJokes");
+    dispatch(fetchJokes());
+  },
+  cancelFetchingJokes: () => {
+    console.log("JakeControllerConnected.cancelFetchingJokes");
+    dispatch(cancelFetchingJokes());
+  },
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(JokeController);
+export default connect(mapStateToProps, mapDispatchToProps)(JokeController);
